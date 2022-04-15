@@ -8,8 +8,10 @@ import css from "./header.module.css";
 import Wallet from "@mui/icons-material/AccountBalanceWalletRounded";
 import {NavLink} from "react-router-dom";
 
+
 const Header = () => {
   const [value, setValue] = useState();
+  const [malue, setMalue] = useState();
   const headerStyle = { background: "black", height: 90 };
   const walletStyle = { color: "orange", fontSize: 30, marginTop: 10 };
   const navbarStyle = { marginRight: 50 };
@@ -28,7 +30,7 @@ const Header = () => {
                   onChange={(e, value) => setValue(value)}
                   TabIndicatorProps={{ style: { backgroundColor: "orange" } }}
                 >
-                  <Tab style={navbarStyle} label="Журнал" />
+                  <Tab style={navbarStyle} as={NavLink} to='/journal' label="Журнал" />
                   <Tab style={navbarStyle} label="Клиент" />
                   <Tab style={navbarStyle} as={NavLink} to='/expenses'  label="Расходы" />
                   <Tab style={navbarStyle}  label="Отчёты" />
@@ -43,8 +45,8 @@ const Header = () => {
                   <Tabs
                     style={tabStyle}
                     textColor="inherit"
-                    value={value}
-                    onChange={(e, value) => setValue(value)}
+                    value={malue}
+                    onChange={(e, malue) => setMalue(malue)}
                     TabIndicatorProps={{ style: { backgroundColor: "orange" } }}
                   >
                     <Tab style={navbarStyle} label="Выход" />
