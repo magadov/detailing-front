@@ -6,6 +6,7 @@ import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import css from "./header.module.css";
 import Wallet from "@mui/icons-material/AccountBalanceWalletRounded";
+import {NavLink} from "react-router-dom";
 
 const Header = () => {
   const [value, setValue] = useState();
@@ -29,8 +30,8 @@ const Header = () => {
                 >
                   <Tab style={navbarStyle} label="Журнал" />
                   <Tab style={navbarStyle} label="Клиент" />
-                  <Tab style={navbarStyle} label="Расходы" />
-                  <Tab style={navbarStyle} label="Отчёты" />
+                  <Tab style={navbarStyle} as={NavLink} to='/expenses'  label="Расходы" />
+                  <Tab style={navbarStyle}  label="Отчёты" />
                 </Tabs>
               </div>
               <div className={css.iconStyle}>
