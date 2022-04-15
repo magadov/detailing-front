@@ -1,0 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+.main {
+  width: 1170px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar {
+  margin: auto;
+  width: 1170px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.iconStyle {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+}
+
