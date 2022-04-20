@@ -20,6 +20,7 @@
   display: flex;
   justify-content: space-between;
 }
+
 .kassa {
   display: flex;
   align-items: center;

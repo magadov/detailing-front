@@ -6,6 +6,7 @@ import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import css from "./header.module.css";
 import Wallet from "@mui/icons-material/AccountBalanceWalletRounded";
+
 import { NavLink } from "react-router-dom";
 
 const headerStyle = { background: "black", height: 90 };
@@ -31,6 +32,7 @@ const Header = () => {
                   onChange={(e, value) => setValue(value)}
                   TabIndicatorProps={{ style: { backgroundColor: "orange" } }}
                 >
+                  
                   <Tab
                     className={navbarStyle}
                     as={NavLink}
