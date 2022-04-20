@@ -2,6 +2,7 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import css from './journal.module.css'
+import { useState } from 'react';
 
 const columns = [
   {
@@ -53,6 +54,7 @@ const rows = [
 
 export default function Journal() {
 
+  const [value, setValue ] = useState();
   const [age, setAge] = React.useState('');
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -72,9 +74,9 @@ export default function Journal() {
               label="Age"
               onChange={handleChange}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={value} onChange={(e, value) => setValue(value)}>Январь</MenuItem>
+              <MenuItem value={value}>Февраль</MenuItem>
+              <MenuItem value={value}>Март</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -86,6 +88,7 @@ export default function Journal() {
         rowsPerPageOptions={[5]}
         checkboxSelection
         disableSelectionOnClick
+        disableColumnMenu={true}
       />
     </div>
   );
