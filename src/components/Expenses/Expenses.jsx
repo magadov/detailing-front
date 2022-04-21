@@ -1,10 +1,13 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, TextField } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import css from "./expenses.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { loadMaterial } from "../../redux/features/materialReducer";
+
 
 const columns = [
   { field: "id", headerName: "ID", width: 50 },
@@ -12,51 +15,68 @@ const columns = [
     field: "firstName",
     headerName: "Наименование",
     width: 300,
-sortable: false
+    sortable: false,
   },
   {
     field: "lastName",
     headerName: "Количество",
     width: 150,
-    sortable: false
+    sortable: false,
   },
   {
     field: "age",
     headerName: "Цена",
     type: "number",
     width: 100,
-    sortable: false
+    sortable: false,
   },
   {
     field: "fullName",
     headerName: "Дата",
     type: Date,
     width: 160,
-    sortable: false
-
+    sortable: false,
   },
 ];
 
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
+// const rows = [
+//   { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
+//   { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
+//   { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
+//   { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
+//   { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
+//   { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
+//   { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
+//   { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
+//   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+// ];
 
 export default function Expenses() {
+  const materials = useSelector((state) => state.materialReducer.materials.material);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadMaterial());
+  }, [dispatch]);
+
   const searchInputStyle = { width: 400 };
   const dateFormStyle = { width: 200 };
-  const addButton = { backgroundColor: "orange", fontSize: 12, marginLeft: 100 };
+  const addButton = {
+    backgroundColor: "orange",
+    fontSize: 12,
+    marginLeft: 100,
+  };
+
+  if(!materials) {
+    return 'load'
+  }
+
+  const rows = materials.map((item, index) => {
+    return { id: index + 1, lastName: item.name, firstName: item.name, age: item.name};
+  });
 
   return (
     <>
-      <CssBaseline />
       <Container maxWidth="lg">
         <Box sx={{ height: "100vh" }}>
           <Box className={css.inputFormMain}>
@@ -82,7 +102,7 @@ export default function Expenses() {
           </Box>
           <Box className={css.content}>
             <h1> Список расходов </h1>
-            <div  style={{ height: 400, width: "90%" }}>
+            <Box style={{ height: 400, width: "90%" }}>
               <DataGrid
                 rows={rows}
                 columns={columns}
@@ -90,7 +110,7 @@ export default function Expenses() {
                 rowsPerPageOptions={[5]}
                 checkboxSelection
               />
-            </div>
+            </Box>
           </Box>
         </Box>
       </Container>

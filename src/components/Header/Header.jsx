@@ -6,14 +6,18 @@ import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import css from "./header.module.css";
 import Wallet from "@mui/icons-material/AccountBalanceWalletRounded";
-import {NavLink} from "react-router-dom";
+
+import { NavLink } from "react-router-dom";
+
+const headerStyle = { background: "black", height: 90 };
+const walletStyle = { color: "orange", fontSize: 30, marginRight: 10 };
+const navbarStyle = { marginRight: "50px" };
+const tabStyle = { marginLeft: 0 };
 
 const Header = () => {
   const [value, setValue] = useState();
-  const headerStyle = { background: "black", height: 90 };
-  const walletStyle = { color: "orange", fontSize: 30, marginTop: 10 };
-  const navbarStyle = { marginRight: 50 };
-  const tabStyle = { marginLeft: 0 };
+  const [malue, setMalue] = useState();
+
   return (
     <AppBar style={headerStyle} position="static">
       <div className={css.main}>
@@ -28,14 +32,24 @@ const Header = () => {
                   onChange={(e, value) => setValue(value)}
                   TabIndicatorProps={{ style: { backgroundColor: "orange" } }}
                 >
-                  <Tab style={navbarStyle} label="Журнал" />
-                  <Tab style={navbarStyle} label="Клиент" />
-                  <Tab style={navbarStyle} as={NavLink} to='/expenses'  label="Расходы" />
-                  <Tab style={navbarStyle}  label="Отчёты" />
+                  <Tab
+                    className={navbarStyle}
+                    as={NavLink}
+                    to="/journal"
+                    label="Журнал"
+                  />
+                  <Tab className={navbarStyle} label="Клиент" />
+                  <Tab
+                    className={navbarStyle}
+                    as={NavLink}
+                    to="/expenses"
+                    label="Расходы"
+                  />
+                  <Tab className={navbarStyle} label="Отчёты" />
                 </Tabs>
               </div>
               <div className={css.iconStyle}>
-                <div>
+                <div className={css.kassa}>
                   <Wallet style={walletStyle} />
                   <span className={css.sum}> 2313 RUB </span>
                 </div>
@@ -43,8 +57,8 @@ const Header = () => {
                   <Tabs
                     style={tabStyle}
                     textColor="inherit"
-                    value={value}
-                    onChange={(e, value) => setValue(value)}
+                    value={malue}
+                    onChange={(e, malue) => setMalue(malue)}
                     TabIndicatorProps={{ style: { backgroundColor: "orange" } }}
                   >
                     <Tab style={navbarStyle} label="Выход" />
