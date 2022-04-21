@@ -18,7 +18,7 @@ const Header = () => {
   const [malue, setMalue] = useState();
 
   return (
-    <AppBar style={headerStyle} position="static">
+    <AppBar style= {headerStyle} position="static">
       <div className={css.main}>
         <Container fixed>
           <Toolbar disableGutters>

@@ -1,10 +1,8 @@
 import React from "react";
 import { Avatar, Button, Grid, Paper, TextField } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-// import { useNavigate } from 'react-router'
 
 const SignInPage = () => {
-  // let navigate = useNavigate();
 
   const paperStyle = {
     padding: 20,

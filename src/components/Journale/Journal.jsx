@@ -2,7 +2,10 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import css from './journal.module.css'
-import { useState } from 'react';
+import { useEffect } from 'react';
+import Container from '@mui/material/Container';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadServices } from '../../redux/features/services.reducer';
 
 const columns = [
   {
@@ -15,12 +18,21 @@ const columns = [
     headerName: 'Услуга',
     width: 150,
     editable: true,
+    headerAlign: 'center',
+  },
+  {
+    field: 'carName',
+    headerName: 'Услуга',
+    width: 150,
+    editable: true,
+    headerAlign: 'center',
   },
   {
     field: 'lastName',
     headerName: 'Клиент',
     width: 150,
     editable: true,
+    headerAlign: 'center'
   },
   {
     field: 'age',
@@ -28,6 +40,7 @@ const columns = [
     type: 'number',
     width: 110,
     editable: true,
+    headerAlign: 'center'
   },
   {
     field: 'fullName',
@@ -35,61 +48,81 @@ const columns = [
     description: 'This column has a value getter and is not sortable.',
     sortable: false,
     width: 160,
+    headerAlign: 'center'
   },
 ];
 
-const rows = [
-  { id: 1, lastName: 'Иванов Сергей', firstName: 'Покраска кузова', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
+// const rows = [
+//   { id: 1, lastName: 'Иванов Сергей', firstName: 'Покраска кузова', age: 35 },
+//   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+//   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+//   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
+//   { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+//   { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+//   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+//   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+//   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+// ];
 
 
 
 export default function Journal() {
 
-  const [value, setValue ] = useState();
-  const [age, setAge] = React.useState('');
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+
+  const services = useSelector((state) => state.servicesReducer.services.serv)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadServices());
+  },[dispatch]);
+
+
+if(!services){
+  return "Loading..."
+}
+const rows = services.map((item, index) => {
+  return (
+    { id: index + 1, lastName: item.client, carName: item.car, firstName: item.name, age: item.cost }
+  )
+})
+
   const searchStyle = { width: 700, marginRight: 165}
   return (
-    <div style={{ height: 400, width: '80%', margin: '100px auto' }}>
-      <div className={css.search}>
-        <TextField style={searchStyle} id="outlined-basic" label="Поиск" variant="outlined" />
-        <Box sx={{ minWidth: 120 }}>
-          <FormControl sx= {{width: 350}} >
-            <InputLabel id="demo-simple-select-label">Месяц</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={age}
-              label="Age"
-              onChange={handleChange}
-            >
-              <MenuItem value={value} onChange={(e, value) => setValue(value)}>Январь</MenuItem>
-              <MenuItem value={value}>Февраль</MenuItem>
-              <MenuItem value={value}>Март</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+    <Container maxWidth="lg">
+
+      <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }} >
+      <div style={{ height: 400, width: '80%', margin: '100px auto' }}>
+        <div className={css.search}>
+          <TextField style={searchStyle} id="outlined-basic" label="Поиск" variant="outlined" />
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl sx= {{width: 350}} >
+              <InputLabel id="demo-simple-select-label">Дата</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Age"
+              >
+                <MenuItem value={10}>Январь</MenuItem>
+                <MenuItem value={20}>Февраль</MenuItem>
+                <MenuItem value={30}>Март</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
+        <DataGrid
+          boxShadow='3'
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+          disableSelectionOnClick
+          disableColumnMenu={true}
+        />
       </div>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-        disableSelectionOnClick
-        disableColumnMenu={true}
-      />
-    </div>
+      </Box>
+
+    </Container>
+
   );
 }
