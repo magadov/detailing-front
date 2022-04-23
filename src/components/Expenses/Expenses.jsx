@@ -7,6 +7,7 @@ import css from "./expenses.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loadMaterial } from "../../redux/features/materialReducer";
+import Admission from "./Admission";
 
 const columns = [
   { field: "id", headerName: "ID", width: 50 },
@@ -52,7 +53,7 @@ const columns = [
     //   );
     // },
     // sortable: false,
-  }
+  },
 ];
 
 export default function Expenses() {
@@ -60,6 +61,7 @@ export default function Expenses() {
     (state) => state.materialReducer.materials.material
   );
   const [search, setSearch] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
   const dispatch = useDispatch();
 
@@ -67,13 +69,12 @@ export default function Expenses() {
     dispatch(loadMaterial());
   }, [dispatch]);
 
+  const handleOpenModal = () => {
+    setOpen(true);
+  };
+
   const searchInputStyle = { width: 400 };
   const dateFormStyle = { width: 200 };
-  const addButton = {
-    backgroundColor: "orange",
-    fontSize: 12,
-    marginLeft: 100,
-  };
 
   if (!materials) {
     return "load";
@@ -89,7 +90,7 @@ export default function Expenses() {
       lastName: item.left,
       firstName: item.name,
       age: item.price,
-      fullName: item.direction.date
+      fullName: item.direction.date,
     };
   });
 
@@ -115,9 +116,8 @@ export default function Expenses() {
                 shrink: true,
               }}
             />
-            <Button variant="contained" style={addButton}>
-              + добавить материал
-            </Button>
+            <Admission/>
+            {open && <Admission button={<Button/>}/>}
           </Box>
           <Box className={css.content}>
             <h1> Список расходов </h1>
@@ -128,9 +128,8 @@ export default function Expenses() {
                 pageSize={10}
                 rowsPerPageOptions={[5]}
                 checkboxSelection
-                components={{Button: "dsd"}}
+                components={{ Button: "dsd" }}
               />
-
             </Box>
           </Box>
         </Box>

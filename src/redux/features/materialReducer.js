@@ -25,7 +25,7 @@ export const materialReducer = (state = initialState, action) => {
 export const loadMaterial = () => {
   return async (dispatch) => {
     try {
-      const res = await fetch("http://localhost:3006/materials", {
+      const res = await fetch("http://localhost:3007/materials", {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -37,7 +37,7 @@ export const loadMaterial = () => {
         dispatch({ type: "MATERIALS_LOAD/FULFILLED", payload: json });
         }
     } catch (e) {
-      dispatch({ type: "MATERIALS_LOAD/REJECTED", error: e.message() });
+      dispatch({ type: "MATERIALS_LOAD/REJECTED", error: e.message});
     }
   };
 };

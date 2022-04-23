@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
+import {Box, TextField} from "@mui/material";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -22,10 +23,29 @@ const Admission = () => {
         setOpen(false);
     };
 
+    const addButton = {
+        backgroundColor: "orange",
+        fontSize: 12,
+        marginLeft: 100,
+        color: "white",
+        height: 57
+    };
+    // const inputFormMain = {
+    //     width: 600,
+    //     margin: "auto",
+    //     padding: "40px 0 0 20px",
+    //     display: "flex",
+    //     justifyContent: "space-between"
+    // }
+    const nameInput = {
+        width: 300,
+        margin: "0 20 20 0"
+    }
+
     return (
-        <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Slide in alert dialog
+        <div >
+            <Button style={addButton} variant="contained" onClick={handleClickOpen} >
+                + добавить материал
             </Button>
             <Dialog
                 open={open}
@@ -33,12 +53,31 @@ const Admission = () => {
                 keepMounted
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
+
             >
-                <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+                <DialogTitle>{"Добавление материала"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
+                        <TextField
+                            id="outlined-basic"
+                            label="Наименование"
+                            variant="outlined"
+                            style={nameInput}
+                            // onChange={(event) => setSearch(event.target.value)}
+                        />
+                        <TextField
+                            id="outlined-basic"
+                            label="Цена"
+                            variant="outlined"
+                            // style={priceInput}
+                            // onChange={(event) => setSearch(event.target.value)}
+                        />
+                        <TextField
+                            id="outlined-basic"
+                            label="Цена"
+                            variant="outlined"
+                            // onChange={(event) => setSearch(event.target.value)}
+                        />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

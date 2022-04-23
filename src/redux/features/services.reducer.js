@@ -23,7 +23,7 @@ export const servicesReducer = (state = initialState, action) => {
 export const loadServices = () => {
   return async (dispatch) => {
     try {
-      const res = await fetch("http://localhost:3003/services", {
+      const res = await fetch("http://localhost:3007/services", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
