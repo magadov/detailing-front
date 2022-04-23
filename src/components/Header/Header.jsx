@@ -10,7 +10,7 @@ import Wallet from "@mui/icons-material/AccountBalanceWalletRounded";
 import { NavLink } from "react-router-dom";
 
 const headerStyle = { background: "black", height: 90 };
-const walletStyle = { color: "orange", fontSize: 30, marginRight: 10};
+const walletStyle = { color: "orange", fontSize: 30, marginRight: 10 };
 const navbarStyle = { marginRight: "50px" };
 const tabStyle = { marginLeft: 0 };
 
@@ -32,7 +32,6 @@ const Header = () => {
                   onChange={(e, value) => setValue(value)}
                   TabIndicatorProps={{ style: { backgroundColor: "orange" } }}
                 >
-                  
                   <Tab
                     className={navbarStyle}
                     as={NavLink}
@@ -40,7 +39,12 @@ const Header = () => {
                     label="Журнал"
                   />
                   <Tab className={navbarStyle} label="Клиент" />
-                  <Tab className={navbarStyle} label="Расходы" />
+                  <Tab
+                    className={navbarStyle}
+                    as={NavLink}
+                    to="/expenses"
+                    label="Расходы"
+                  />
                   <Tab className={navbarStyle} label="Отчёты" />
                 </Tabs>
               </div>
