@@ -6,8 +6,8 @@ import { servicesReducer } from './features/services.reducer';
 
 export const store = createStore(
   combineReducers({
-    servicesReducer,
-          materialReducer
+      materialReducer,
+    servicesReducer
   }),
   composeWithDevTools(applyMiddleware(thunk))
 );

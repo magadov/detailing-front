@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { loadMaterial } from "../../redux/features/materialReducer";
 import Admission from "./Admission";
 
+
 const columns = [
   { field: "id", headerName: "ID", width: 50 },
   {
@@ -84,7 +85,7 @@ export default function Expenses() {
     return element.name.toLowerCase().includes(search.toLowerCase());
   });
 
-  const rows = filtered.map((item, index) => {
+   const rows = filtered.map((item, index) => {
     return {
       id: index + 1,
       lastName: item.left,
@@ -92,6 +93,32 @@ export default function Expenses() {
       age: item.price,
       fullName: item.direction.date,
     };
+  });
+
+
+
+export default function Expenses() {
+  const materials = useSelector((state) => state.materialReducer.materials.material);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadMaterial());
+  }, [dispatch]);
+
+  const searchInputStyle = { width: 400 };
+  const dateFormStyle = { width: 200 };
+  const addButton = {
+    backgroundColor: "orange",
+    fontSize: 12,
+    marginLeft: 100,
+  };
+
+  if(!materials) {
+    return 'load'
+  }
+
+  const rows = materials.map((item, index) => {
+    return { id: index + 1, lastName: item.name, firstName: item.name, age: item.name};
   });
 
   return (

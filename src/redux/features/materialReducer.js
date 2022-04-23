@@ -26,6 +26,7 @@ export const loadMaterial = () => {
   return async (dispatch) => {
     try {
       const res = await fetch("http://localhost:3007/materials", {
+
         method: "GET",
         headers: {
           "Content-type": "application/json",
