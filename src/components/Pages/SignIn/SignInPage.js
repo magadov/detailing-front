@@ -1,10 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Button, Grid, Paper, TextField } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-// import { useNavigate } from 'react-router'
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../../../redux/features/application";
+import { useNavigate } from 'react-router'
 
 const SignInPage = () => {
-  // let navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+
+  const signingIn = useSelector((state) => state.application.signingIn);
+  const error = useSelector((state) => state.application.error);
+  const token = useSelector((state) => state.application.token);
+
+
+  const handleChangeLogin = (e) => {
+    setLogin(e.target.value);
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    dispatch(auth(login, password));
+  };
 
   const paperStyle = {
     padding: 20,
@@ -15,6 +38,7 @@ const SignInPage = () => {
   const avatarStyle = { background: "orange" };
   const textFieldStyle = { marginBottom: 20, marginTop: 20 };
   const logInStyle = { background: "orange", width: 100, margin: "20px 90px" };
+
   return (
     <Grid>
       <Paper elevation={10} style={paperStyle}>
@@ -27,6 +51,8 @@ const SignInPage = () => {
         <TextField
           style={textFieldStyle}
           id="outlined-basic"
+          onChange={handleChangeLogin}
+          value={login}
           label="Логин"
           variant="outlined"
           fullWidth
@@ -36,15 +62,24 @@ const SignInPage = () => {
           id="outlined-password-input"
           label="Пароль"
           type="password"
+          onChange={handleChangePassword}
+          value={password}
           autoComplete="current-password"
           fullWidth
           required
         />
-        <Button style={logInStyle} type="submit" variant="contained">
-          {" "}
-          Войти{" "}
+        <Button
+          style={logInStyle}
+          type="submit"
+          variant="contained"
+          onClick={handleSubmit}
+          disabled={signingIn}
+        >
+          Войти
         </Button>
-        {/*{token ? navigate("/")  : "Неверный логин или пароль!" }*/}
+        <div>
+          {error}
+        </div>
       </Paper>
     </Grid>
   );
