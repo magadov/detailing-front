@@ -37,6 +37,7 @@ export const auth = (login, password) => {
         body: JSON.stringify({ login, password }),
         headers: {
           "Content-Type": "application/json",
+
         },
       });
       const json = await response.json();
