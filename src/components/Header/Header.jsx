@@ -19,7 +19,7 @@ const Header = () => {
   const [malue, setMalue] = useState();
 
   return (
-    <AppBar style= {headerStyle} position="static">
+    <AppBar style={headerStyle} position="static">
       <div className={css.main}>
         <Container fixed>
           <Toolbar disableGutters>
@@ -38,7 +38,12 @@ const Header = () => {
                     to="/journal"
                     label="Журнал"
                   />
-                  <Tab className={navbarStyle} label="Клиент" />
+                  <Tab
+                    className={navbarStyle}
+                    as={NavLink}
+                    to="/client"
+                    label="Клиент"
+                  />
                   <Tab
                     className={navbarStyle}
                     as={NavLink}
