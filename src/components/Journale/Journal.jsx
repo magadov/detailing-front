@@ -82,7 +82,7 @@ if(!services){
   return "Loading..."
 }
 
-  const filtered = services?.filter((elem) =>{
+  const filtered = services.filter((elem) =>{
     return elem.name.toLowerCase().includes(search.toLowerCase());
   })
 
