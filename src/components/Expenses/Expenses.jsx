@@ -117,7 +117,7 @@ export default function Expenses() {
     return 'load'
   }
 
-  const rows = materials.map((item, index) => {
+  const rows = materials.material.map((item, index) => {
     return { id: index + 1, lastName: item.name, firstName: item.name, age: item.name};
   });
 
