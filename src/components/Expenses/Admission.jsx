@@ -12,11 +12,35 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const currencies = [
+    {
+        value: 'none',
+    },
+    {
+        value: 'шт',
+        label: 'шт',
+    },
+    {
+        value: 'кг',
+        label: 'кг',
+    },
+    {
+        value: 'л',
+        label: 'л',
+    },
+];
+
+
 const Admission = () => {
+    const [currency, setCurrency] = React.useState('none');
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
+    };
+
+    const handleChange = (event) => {
+        setCurrency(event.target.value);
     };
 
     const handleClose = () => {
@@ -38,7 +62,7 @@ const Admission = () => {
     //     justifyContent: "space-between"
     // }
     const nameInput = {
-        width: 300,
+        width: 500,
         margin: "0 20 20 0"
     }
 
@@ -58,26 +82,49 @@ const Admission = () => {
                 <DialogTitle>{"Добавление материала"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        <TextField
-                            id="outlined-basic"
-                            label="Наименование"
-                            variant="outlined"
-                            style={nameInput}
-                            // onChange={(event) => setSearch(event.target.value)}
-                        />
-                        <TextField
-                            id="outlined-basic"
-                            label="Цена"
-                            variant="outlined"
-                            // style={priceInput}
-                            // onChange={(event) => setSearch(event.target.value)}
-                        />
-                        <TextField
-                            id="outlined-basic"
-                            label="Цена"
-                            variant="outlined"
-                            // onChange={(event) => setSearch(event.target.value)}
-                        />
+                        <div style={{textAlign: "center"}}>
+                            <TextField
+                                id="outlined-basic"
+                                label="Наименование"
+                                variant="outlined"
+                                style={nameInput}
+                                // onChange={(event) => setSearch(event.target.value)}
+                            />
+                            <TextField
+                                id="outlined-basic"
+                                label="Цена"
+                                variant="outlined"
+                                type="number"
+                                style={{width: 150, marginTop: 15, marginRight: 10}}
+                                // style={priceInput}
+                                // onChange={(event) => setSearch(event.target.value)}
+                            />
+                            <TextField
+                                id="outlined-basic"
+                                label="Кол-во"
+                                variant="outlined"
+                                type="number"
+                                style={{width: 100, marginTop: 15,  marginRight: 10}}
+                                // onChange={(event) => setSearch(event.target.value)}
+                            />
+                            <TextField
+                                id="outlined-select-currency-native"
+                                select
+                                label="Ед"
+                                style={{width: 80, marginTop: 15}}
+                                value={currency}
+                                onChange={handleChange}
+                                SelectProps={{
+                                    native: true,
+                                }}
+                            >
+                                {currencies.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </TextField>
+                        </div>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
