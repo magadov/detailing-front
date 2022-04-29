@@ -25,7 +25,7 @@ export const materialReducer = (state = initialState, action) => {
 export const loadMaterial = () => {
   return async (dispatch) => {
     try {
-      const res = await fetch("http://localhost:3006/materials", {
+      const res = await fetch("http://localhost:3003/materials", {
         method: "GET",
         headers: {
           "Content-type": "application/json",
