@@ -1,34 +1,28 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import { Box,  TextField } from "@mui/material";
-import { useState } from 'react';
-// import { makeStyles } from "@mui/material/styles"
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+import {  TextField } from "@mui/material";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addClient } from "../../redux/features/clients.reducer";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-// const useStyles = makeStyles((theme) => {
-//   return {
-//     addButton: {
-//       backgroundColor: "orange",
-//       fontSize: 12,
-//       marginLeft: 100,
-//       color: "white",
-//       height: 57
-//     }
-//   }
-// })
-
 const CarModal = () => {
-
   const [open, setOpen] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [vin, setVin] = useState("");
+
+  const dispatch = useDispatch();
 
   const classes = {
     addButton: {
@@ -36,16 +30,26 @@ const CarModal = () => {
       fontSize: 12,
       marginLeft: 100,
       color: "white",
-      height: 57
+      height: 57,
     },
     addBut: {
       backgroundColor: "orange",
       fontSize: 12,
-      marginLeft: 100,
+      margin: "auto",
       color: "white",
-      height: 50
-    }
-  }
+      height: 50,
+    },
+    nameInput: {
+      width: 300,
+      margin: "0 20 20 0",
+    },
+    inputDiv: {
+      textAlign: "center",
+    },
+    inputPosition: {
+      margin: "15px",
+    },
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -54,22 +58,31 @@ const CarModal = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleChangeFirstName = (e) => {
+    setFirstName(e.target.value);
+  };
+  const handleChangeLastName = (e) => {
+    setLastName(e.target.value);
+  };
+  const handleChangePhone = (e) => {
+    setPhone(e.target.value);
+  };
+  const handleChangeVin = (e) => {
+    setVin(e.target.value);
+  };
 
-  // const inputFormMain = {
-  //     width: 600,
-  //     margin: "auto",
-  //     padding: "40px 0 0 20px",
-  //     display: "flex",
-  //     justifyContent: "space-between"
-  // }
-  const nameInput = {
-    width: 300,
-    margin: "0 20 20 0"
-  }
+  const handleAddClient = () => {
+    dispatch(addClient(firstName, lastName, phone, vin));
+    setOpen(false);
+  };
 
   return (
-    <div >
-      <Button style={classes.addButton} variant="contained" onClick={handleClickOpen} >
+    <div>
+      <Button
+        style={classes.addButton}
+        variant="contained"
+        onClick={handleClickOpen}
+      >
         + добавить клиента
       </Button>
       <Dialog
@@ -78,41 +91,48 @@ const CarModal = () => {
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
-
       >
         <DialogTitle>{"Добавление клиента"}</DialogTitle>
-        <DialogContent>
+        <DialogContent style={classes.inputDiv}>
           <DialogContentText id="alert-dialog-slide-description">
             <TextField
               id="outlined-basic"
-              label="Наименование"
+              label="Фамилия"
               variant="outlined"
-              style={nameInput}
-              // onChange={(event) => setSearch(event.target.value)}
+              style={classes.inputPosition}
+              onChange={handleChangeFirstName}
             />
             <TextField
               id="outlined-basic"
-              label="Цена"
+              label="Имя"
               variant="outlined"
-              // style={priceInput}
-              // onChange={(event) => setSearch(event.target.value)}
+              style={classes.inputPosition}
+              onChange={handleChangeLastName}
             />
             <TextField
               id="outlined-basic"
-              label="Цена"
+              label="Телефон"
               variant="outlined"
-              // onChange={(event) => setSearch(event.target.value)}
+              style={classes.inputPosition}
+              onChange={handleChangePhone}
+            />
+            <TextField
+              id="outlined-basic"
+              label="VIN"
+              variant="outlined"
+              style={classes.inputPosition}
+              onChange={handleChangeVin}
             />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button style={classes.addBut} variant="contained"  >
+          <Button style={classes.addBut} variant="contained" onClick={handleAddClient}>
             + добавить
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
 
 export default CarModal;

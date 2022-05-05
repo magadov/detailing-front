@@ -56,7 +56,7 @@ export const loadServices = () => {
   return async (dispatch) => {
     dispatch({ type: "services/fetch/loading" });
     try {
-      const res = await fetch("http://localhost:3007/services", {
+      const res = await fetch("http://localhost:3003/services", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
