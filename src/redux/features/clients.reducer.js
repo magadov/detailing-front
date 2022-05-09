@@ -10,7 +10,7 @@ export const clientsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        clients: { ...state.clients, ...action.payload },
+        clients: action.payload,
       };
     case "clients/fetch/rejected":
       return {
@@ -50,13 +50,13 @@ export const loadClients = () => {
     const state = getState();
     try {
       const res = await fetch("http://localhost:3003/clients", {
-        method: "GET",
         headers: {
+          "Content-type": "application/json",
           Authorization: `Bearer ${state.application.token}`,
         },
       });
       const json = await res.json();
-      dispatch({ type: "clients/fetch/fulfilled", payload: json });
+      dispatch({ type: "clients/fetch/fulfilled", payload: json.clients });
     } catch (e) {
       dispatch({ type: "clients/fetch/rejected", error: e.toString() });
     }

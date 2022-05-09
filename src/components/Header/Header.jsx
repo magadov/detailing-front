@@ -50,7 +50,10 @@ const Header = () => {
                     to="/expenses"
                     label="Расходы"
                   />
-                  <Tab className={navbarStyle} label="Отчёты" />
+                  <Tab className={navbarStyle}
+                       as={NavLink}
+                       to="/report"
+                       label="Отчёты" />
                 </Tabs>
               </div>
               <div className={css.iconStyle}>
