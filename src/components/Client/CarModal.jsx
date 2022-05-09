@@ -22,6 +22,7 @@ const CarModal = () => {
   const [phone, setPhone] = useState("");
   const [vin, setVin] = useState("");
 
+
   const dispatch = useDispatch();
 
   const classes = {
@@ -72,7 +73,7 @@ const CarModal = () => {
   };
 
   const handleAddClient = () => {
-    dispatch(addClient(firstName, lastName, phone, vin));
+    dispatch(addClient({firstName, lastName, phone, vin}));
     setOpen(false);
   };
 
@@ -100,12 +101,14 @@ const CarModal = () => {
               label="Фамилия"
               variant="outlined"
               style={classes.inputPosition}
+              value={firstName}
               onChange={handleChangeFirstName}
             />
             <TextField
               id="outlined-basic"
               label="Имя"
               variant="outlined"
+              value={lastName}
               style={classes.inputPosition}
               onChange={handleChangeLastName}
             />
@@ -113,6 +116,7 @@ const CarModal = () => {
               id="outlined-basic"
               label="Телефон"
               variant="outlined"
+              value={phone}
               style={classes.inputPosition}
               onChange={handleChangePhone}
             />
@@ -120,13 +124,14 @@ const CarModal = () => {
               id="outlined-basic"
               label="VIN"
               variant="outlined"
+              value={vin}
               style={classes.inputPosition}
               onChange={handleChangeVin}
             />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button style={classes.addBut} variant="contained" onClick={handleAddClient}>
+          <Button  style={classes.addBut} variant="contained" onClick={handleAddClient}>
             + добавить
           </Button>
         </DialogActions>

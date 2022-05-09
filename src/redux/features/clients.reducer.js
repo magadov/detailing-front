@@ -1,6 +1,8 @@
 const initialState = {
   clients: [],
   loading: false,
+  adding: false,
+  deleting: false,
   error: null,
 };
 
@@ -10,7 +12,7 @@ export const clientsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        clients: { ...state.clients, ...action.payload },
+        clients: action.payload.clients,
       };
     case "clients/fetch/rejected":
       return {
@@ -26,19 +28,38 @@ export const clientsReducer = (state = initialState, action) => {
     case "clients/add/pending":
       return {
         ...state,
-        loading: true,
+        adding: true,
       };
     case "clients/add/fulfilled":
       return {
         ...state,
-        loading: false,
-        clients: { ...state.clients, ...action.payload }
+        adding: false,
+        clients: [...state.clients, action.payload.clients],
       };
     case "clients/add/rejected":
       return {
         ...state,
-        loading: false,
-        error: action.error
+        adding: false,
+        error: action.error,
+      };
+    case "clients/delete/pending":
+      return {
+        ...state,
+        deleting: true,
+      };
+    case "clients/delete/fulfilled":
+      return {
+        ...state,
+        deleting: false,
+        clients: state.clients.filter(
+          (client) => client._id !== action.payload
+        ),
+      };
+    case "clients/delete/rejected":
+      return {
+        ...state,
+        error: action.error,
+        deleting: false,
       };
     default:
       return state;
@@ -51,8 +72,8 @@ export const loadClients = () => {
     const state = getState();
     try {
       const res = await fetch("http://localhost:3003/clients", {
-        method: "GET",
         headers: {
+          "Content-type": "application/json",
           Authorization: `Bearer ${state.application.token}`,
         },
       });
@@ -64,21 +85,24 @@ export const loadClients = () => {
   };
 };
 
-export const addClient = (firstName, lastName, phone, vin) => {
+export const addClient = (data) => {
   return async (dispatch, getState) => {
     const state = getState();
     dispatch({ type: "clients/add/pending" });
     try {
       const res = await fetch("http://localhost:3003/clients", {
-        method: 'POST',
-        body: JSON.stringify({firstName, lastName, phone, vin}),
+        method: "POST",
+        body: JSON.stringify(data),
         headers: {
+          "Content-type": "application/json",
           Authorization: `Bearer ${state.application.token}`,
         },
       });
       const json = await res.json();
-      console.log(json)
+      console.log(json);
+
       dispatch({ type: "clients/add/fulfilled", payload: json });
+      dispatch({ type: "cars/add/fulfilled", payload: json });
     } catch (e) {
       dispatch({ type: "clients/add/rejected", error: e.toString() });
     }
@@ -90,15 +114,14 @@ export const deleteClient = (id) => {
     const state = getState();
     dispatch({ type: "clients/delete/pending" });
     try {
-      const res = await fetch(`http://localhost:3003/clients/${id}`, {
-        method: 'DELETE',
+      await fetch(`http://localhost:3003/clients/${id}`, {
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${state.application.token}`,
         },
       });
-      const json = await res.json();
 
-      dispatch({ type: "clients/delete/fulfilled", payload: json });
+      dispatch({ type: "clients/delete/fulfilled", payload: id });
     } catch (e) {
       dispatch({ type: "clients/delete/rejected", error: e.toString() });
     }

@@ -10,7 +10,7 @@ export const carsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        cars: { ...state.cars, ...action.payload },
+        cars: action.payload.cars,
       };
     case "cars/fetch/rejected":
       return {
@@ -23,18 +23,18 @@ export const carsReducer = (state = initialState, action) => {
         ...state,
         loading: true,
       };
-    case "clients/add/pending":
+    case "cars/add/pending":
       return {
         ...state,
         loading: true,
       };
-    case "clients/add/fulfilled":
+    case "cars/add/fulfilled":
       return {
         ...state,
         loading: false,
-        clients: { ...state.clients, ...action.payload },
+        cars: [...state.cars, action.payload.carVin],
       };
-    case "clients/add/rejected":
+    case "cars/add/rejected":
       return {
         ...state,
         loading: false,
@@ -51,8 +51,8 @@ export const loadCars = () => {
     const state = getState();
     try {
       const res = await fetch("http://localhost:3003/cars", {
-        method: "GET",
         headers: {
+          "Content-type": "application/json",
           Authorization: `Bearer ${state.application.token}`,
         },
       });
@@ -60,6 +60,27 @@ export const loadCars = () => {
       dispatch({ type: "cars/fetch/fulfilled", payload: json });
     } catch (e) {
       dispatch({ type: "cars/fetch/rejected", error: e.toString() });
+    }
+  };
+};
+
+export const addCars = (vin, clientId) => {
+  return async (dispatch, getState) => {
+    dispatch({ type: "cars/add/pending" });
+    const state = getState();
+    try {
+      const res = await fetch(`http://localhost:3003/cars/${clientId}`, {
+        method: "POST",
+        body: JSON.stringify({ vin }),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${state.application.token}`,
+        },
+      });
+      const json = await res.json();
+      dispatch({ type: "cars/add/fulfilled", payload: json });
+    } catch (e) {
+      dispatch({ type: "cars/add/rejected", error: e.toString() });
     }
   };
 };

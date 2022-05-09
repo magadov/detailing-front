@@ -7,64 +7,59 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteClient, loadClients } from "../../redux/features/clients.reducer";
+import {
+  deleteClient,
+  loadClients,
+} from "../../redux/features/clients.reducer";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Button, TextField } from "@mui/material";
 import CarModal from "./CarModal";
 import { loadCars } from "../../redux/features/cars.reducer";
+import Cars from "../Cars";
+
+const classes = {
+  searchInputStyle: {
+    width: 400,
+  },
+  dateFormStyle: {
+    width: 200,
+  },
+  addButton: {
+    backgroundColor: "orange",
+    fontSize: 12,
+    marginLeft: 100,
+  },
+  inputForMain: {
+    width: 1000,
+    padding: "40px 0 0 20px",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  content: {
+    padding: "70px 0 0 20px",
+  },
+};
 
 const Client = () => {
-  const clients = useSelector((state) => state.clientsReducer.clients.client);
-  const cars = useSelector((state) => state.carsReducer.cars.cars);
+  const clients = useSelector((state) => state.clientsReducer.clients);
   const loading = useSelector((state) => state.clientsReducer.loading);
+  const deleting = useSelector((state) => state.clientsReducer.deleting);
 
   const dispatch = useDispatch();
 
   const [search, setSearch] = useState("");
-  const [id, setId] = useState(null);
 
-  console.log(id)
   useEffect(() => {
     dispatch(loadClients());
     dispatch(loadCars());
   }, [dispatch]);
 
-  const handleSelectChange = (e) => {
-    const {value} = e.target;
-    setId(value);
-  }
-
   const handleClickDelete = (id) => {
-    dispatch(deleteClient(id))
+    dispatch(deleteClient(id));
   };
-  // const carsByClients = cars?.filter((car) => car.client === clients._id)
 
-  const classes = {
-    searchInputStyle: {
-      width: 400
-    },
-    dateFormStyle: {
-      width: 200
-    },
-    addButton: {
-      backgroundColor: "orange",
-      fontSize: 12,
-      marginLeft: 100,
-    },
-    inputForMain: {
-      width: 1000,
-      padding: '40px 0 0 20px',
-      display: "flex",
-      justifyContent:"space-between"
-    },
-    content: {
-      padding: "70px 0 0 20px"
-    }
-  }
-
-
-  const filtered = clients?.filter((element) => {
+  const filtered = clients.filter((element) => {
     return (
       element.firstName.toLowerCase().includes(search.toLowerCase()) ||
       element.lastName.toLowerCase().includes(search.toLowerCase())
@@ -73,7 +68,7 @@ const Client = () => {
 
   return (
     <>
-    {loading ? (
+      {loading ? (
         "Загрузка..."
       ) : (
         <Container maxWidth="lg">
@@ -101,9 +96,8 @@ const Client = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {filtered?.map((row, index) => (
+                    {filtered.map((row, index) => (
                       <TableRow
-                        onChange={handleSelectChange}
                         key={index}
                         value={row}
                         sx={{
@@ -117,27 +111,16 @@ const Client = () => {
                           {row.firstName} {row.lastName}
                         </TableCell>
                         <TableCell align="right">{row.phone}</TableCell>
-                        {/*{carsByClients?.map((car) => {*/}
-                        {/*  return (*/}
-                        {/*    <TableCell align="right">{car.vinData.model}</TableCell>*/}
-                        {/*  )*/}
-                        {/*})}*/}
+                        <Cars clientId={row._id} />
                         <TableCell align="right">
                           <Button
                             variant="contained"
                             color="primary"
                             style={{ background: "orange", fontSize: 8 }}
-
-                          >
-                            изменить
-                          </Button>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            style={{ background: "orange", fontSize: 8 }}
-                            onClick={() => {handleClickDelete(row._id)}}
+                            disabled={deleting}
+                            onClick={() => {
+                              handleClickDelete(row._id);
+                            }}
                           >
                             удалить
                           </Button>
