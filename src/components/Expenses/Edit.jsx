@@ -5,18 +5,17 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { TextField } from "@mui/material";
-import { admission } from "../../redux/actions/materialActions";
+import { editMaterial } from "../../redux/actions/materialActions";
 
-export default function AdmissionModal({ materialId }) {
+export default function Edit({ materialId }) {
   const materials = useSelector((state) => state.materialReducer.materials);
-  const admiss = useSelector((state) => state.materialReducer.admission);
-
+  const editing = useSelector((state) => state.materialReducer.editing);
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-  const [vol, setVol] = React.useState(0);
+  const [name, setName] = React.useState("");
+  const [price, setPrice] = React.useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,20 +25,29 @@ export default function AdmissionModal({ materialId }) {
     setOpen(false);
   };
 
-  const handleChangeVolume = (e) => {
-    setVol(e.target.value);
+  const handleChangeName = (e) => {
+    setName(e.target.value);
   };
 
-  const admissionButton = (id, volume) => {
-    dispatch(admission(id, volume));
+  const handleChangePrice = (e) => {
+    setPrice(e.target.value);
+  };
+
+  const saveChange = (id) => {
+    dispatch(editMaterial(id, name, price));
   };
 
   const filtered = materials.filter((elem) => elem._id === materialId);
 
   return (
     <div>
-      <Button onClick={handleClickOpen}>
-        <AddCircleRoundedIcon style={{ cursor: "pointer" }} />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleClickOpen}
+        style={{ background: "orange", fontSize: 8, color: "white" }}
+      >
+        Изменить
       </Button>
       <Dialog
         open={open}
@@ -47,16 +55,25 @@ export default function AdmissionModal({ materialId }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Поступление материала</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Редактирование</DialogTitle>
         <DialogContent style={{ margin: "auto" }}>
           <DialogContentText id="alert-dialog-description">
             <TextField
               id="outlined-basic"
-              label="Кол-во"
+              label="Наименование"
+              variant="outlined"
+              type="text"
+              value={name}
+              onChange={handleChangeName}
+              style={{ width: 200, marginTop: 15, marginRight: 10 }}
+            />
+            <TextField
+              id="outlined-basic"
+              label="Цена"
               variant="outlined"
               type="number"
-              value={vol}
-              onChange={handleChangeVolume}
+              value={price}
+              onChange={handleChangePrice}
               style={{ width: 100, marginTop: 15, marginRight: 10 }}
             />
           </DialogContentText>
@@ -64,8 +81,13 @@ export default function AdmissionModal({ materialId }) {
         <DialogActions>
           {filtered.map((item) => {
             return (
-              <Button disabled={admiss} onClick={() => admissionButton(item._id)}>
-                {admiss ? "загрузка" :  "Добавить"}
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={editing}
+                onClick={() => saveChange(item._id)}
+              >
+                Сохранить
               </Button>
             );
           })}
