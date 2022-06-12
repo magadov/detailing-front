@@ -1,23 +1,24 @@
 import React from "react";
-import TableCell from "@mui/material/TableCell";
 import { useSelector } from "react-redux";
-import AddCarModal from "./addCarModal";
+import ModalCarDelete from "./ModalCarDelete";
+import { Box } from "@mui/material";
 
 const Cars = ({ clientId }) => {
   const cars = useSelector((state) => state.carsReducer.cars);
   const carsByClients = cars.filter((car) => car.client === clientId);
+
   return (
     <>
       {carsByClients.map((car) => {
         return (
-          <div align="right">
-            <TableCell>
+          <Box style={{ textAlign: "-webkit-center" }}>
+            <p>
               {car.vinData.mark} {car.vinData.model}
-            </TableCell>
-          </div>
+              <ModalCarDelete id={car._id} />
+            </p>
+          </Box>
         );
       })}
-      <AddCarModal clientId={clientId} />
     </>
   );
 };

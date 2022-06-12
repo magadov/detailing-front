@@ -1,6 +1,7 @@
 const initialState = {
   cars: [],
   loading: false,
+  deleting: false,
   error: null,
 };
 
@@ -40,6 +41,23 @@ export const carsReducer = (state = initialState, action) => {
         loading: false,
         error: action.error,
       };
+    case "cars/delete/pending":
+      return {
+        ...state,
+        deleting: true
+      };
+    case "cars/delete/fulfilled":
+      return {
+        ...state,
+        deleting: false,
+        cars: state.cars.filter((car) => car._id !== action.payload),
+      };
+    case "cars/delete/rejected":
+      return {
+        ...state,
+        deleting: false,
+        error: action.error
+      };
     default:
       return state;
   }
@@ -64,9 +82,9 @@ export const loadCars = () => {
   };
 };
 
-export const addCars = (vin, clientId) => {
+export const addCars = ({ vin, clientId }) => {
   return async (dispatch, getState) => {
-    dispatch({ type: "cars/add/pending" });
+    dispatch({ type: "cars/add/pending", payload: clientId });
     const state = getState();
     try {
       const res = await fetch(`http://localhost:3003/cars/${clientId}`, {
@@ -81,6 +99,25 @@ export const addCars = (vin, clientId) => {
       dispatch({ type: "cars/add/fulfilled", payload: json });
     } catch (e) {
       dispatch({ type: "cars/add/rejected", error: e.toString() });
+    }
+  };
+};
+export const deleteCars = (id) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    dispatch({ type: "cars/delete/pending" });
+    try {
+      const res = await fetch(`http://localhost:3003/cars/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${state.application.token}`,
+        },
+      });
+      const json = await res.json();
+      dispatch({ type: "cars/delete/fulfilled", payload: id });
+    } catch (e) {
+      dispatch({ type: "cars/delete/rejected", error: e.toString() });
     }
   };
 };

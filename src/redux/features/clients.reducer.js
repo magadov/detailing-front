@@ -45,7 +45,15 @@ export const clientsReducer = (state = initialState, action) => {
     case "clients/delete/pending":
       return {
         ...state,
-        deleting: true,
+        clients: state.clients.map((item) => {
+          if (item._id === action.payload) {
+            return {
+              ...item,
+              deleting: true,
+            };
+          }
+          return item;
+        }),
       };
     case "clients/delete/fulfilled":
       return {
@@ -112,7 +120,7 @@ export const addClient = (data) => {
 export const deleteClient = (id) => {
   return async (dispatch, getState) => {
     const state = getState();
-    dispatch({ type: "clients/delete/pending" });
+    dispatch({ type: "clients/delete/pending", payload: id });
     try {
       await fetch(`http://localhost:3003/clients/${id}`, {
         method: "DELETE",

@@ -7,16 +7,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteClient,
-  loadClients,
-} from "../../redux/features/clients.reducer";
+import { loadClients } from "../../redux/features/clients.reducer";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import CarModal from "./CarModal";
 import { loadCars } from "../../redux/features/cars.reducer";
 import Cars from "../Cars";
+import AddCarModal from "../Cars/addCarModal";
+import ModalClientDelete from "./ModalClientDelete";
 
 const classes = {
   searchInputStyle: {
@@ -44,7 +43,6 @@ const classes = {
 const Client = () => {
   const clients = useSelector((state) => state.clientsReducer.clients);
   const loading = useSelector((state) => state.clientsReducer.loading);
-  const deleting = useSelector((state) => state.clientsReducer.deleting);
 
   const dispatch = useDispatch();
 
@@ -54,10 +52,6 @@ const Client = () => {
     dispatch(loadClients());
     dispatch(loadCars());
   }, [dispatch]);
-
-  const handleClickDelete = (id) => {
-    dispatch(deleteClient(id));
-  };
 
   const filtered = clients.filter((element) => {
     return (
@@ -86,13 +80,15 @@ const Client = () => {
             <Box style={classes.content}>
               <h1> Клиенты </h1>
               <TableContainer style={{ width: 1050 }} component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{ minWidth: 650 }} aria-label="simple table" style={{borderCollapse: 'inherit'}}>
                   <TableHead>
                     <TableRow>
-                      <TableCell align="right">№</TableCell>
+                      <TableCell align="center">№</TableCell>
                       <TableCell>Имя</TableCell>
-                      <TableCell align="right">Контакты</TableCell>
-                      <TableCell align="right">Машина</TableCell>
+                      <TableCell align="center">Контакты</TableCell>
+                      <TableCell align="center">Машина</TableCell>
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center"></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -104,26 +100,24 @@ const Client = () => {
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
                       >
-                        <TableCell align="right" style={{ width: 70 }}>
+                        <TableCell align="center" style={{ width: 70 }}>
                           {index + 1}
                         </TableCell>
-                        <TableCell component="th" scope="row">
+                        <TableCell component="td" scope="row">
                           {row.firstName} {row.lastName}
                         </TableCell>
-                        <TableCell align="right">{row.phone}</TableCell>
-                        <Cars clientId={row._id} />
-                        <TableCell align="right">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            style={{ background: "orange", fontSize: 8 }}
-                            disabled={deleting}
-                            onClick={() => {
-                              handleClickDelete(row._id);
-                            }}
-                          >
-                            удалить
-                          </Button>
+                        <TableCell align="center">{row.phone}</TableCell>
+                        <TableCell align="center">
+                          <Cars clientId={row._id} />
+                        </TableCell>
+                        <TableCell align="center">
+                          <AddCarModal clientId={row._id} />
+                        </TableCell>
+                        <TableCell align="center">
+                          <ModalClientDelete
+                            id={row._id}
+                            deleting={row.deleting}
+                          />
                         </TableCell>
                       </TableRow>
                     ))}

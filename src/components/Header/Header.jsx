@@ -18,6 +18,11 @@ const Header = () => {
   const [value, setValue] = useState();
   const [malue, setMalue] = useState();
 
+  const logOut = () => {
+    localStorage.clear()
+      window.location.href="/signIn"
+  }
+
   return (
     <AppBar style={headerStyle} position="static">
       <div className={css.main}>
@@ -66,7 +71,7 @@ const Header = () => {
                     onChange={(e, malue) => setMalue(malue)}
                     TabIndicatorProps={{ style: { backgroundColor: "orange" } }}
                   >
-                    <Tab style={navbarStyle} label="Выход" />
+                    <Tab style={navbarStyle} label="Выход" onClick={() => {logOut()}} />
                   </Tabs>
                 </div>
               </div>
