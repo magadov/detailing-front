@@ -85,6 +85,7 @@ const Client = () => {
                     <TableRow>
                       <TableCell align="center">№</TableCell>
                       <TableCell>Имя</TableCell>
+
                       <TableCell align="center">Контакты</TableCell>
                       <TableCell align="center">Машина</TableCell>
                       <TableCell align="center"></TableCell>
