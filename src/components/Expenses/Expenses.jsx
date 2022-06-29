@@ -22,6 +22,7 @@ import {
 } from "../../redux/actions/materialActions";
 import Edit from "./Edit";
 import LoadingButton from "@mui/lab/LoadingButton";
+import BasicDateRangePicker from "../Report/DatePicker";
 
 export default function Expenses() {
   const materials = useSelector((state) => state.materialReducer.materials);
@@ -39,7 +40,6 @@ export default function Expenses() {
   };
 
   const searchInputStyle = { width: 400 };
-  const dateFormStyle = { width: 200 };
 
   const filtered = materials.filter((element) => {
     return element.name.toLowerCase().includes(search.toLowerCase());
@@ -60,32 +60,7 @@ export default function Expenses() {
                 style={searchInputStyle}
                 onChange={(event) => setSearch(event.target.value)}
               />
-              {/*<TextField*/}
-              {/*  id="outlined-select-currency-native"*/}
-              {/*  select*/}
-              {/*  label="Ед"*/}
-              {/*  name="volumeType"*/}
-              {/*  style={{ width: 80, marginTop: 15 }}*/}
-              {/*  SelectProps={{*/}
-              {/*    native: true,*/}
-              {/*  }}*/}
-              {/*>*/}
-              {/*  {materials.map((option) => (*/}
-              {/*    <option key={option.value} value={option.value}>*/}
-              {/*      {option.direction.map((option) => option.date)}*/}
-              {/*    </option>*/}
-              {/*  ))}*/}
-              {/*</TextField>*/}
-              <TextField
-                id="date"
-                label="Дата"
-                type="date"
-                defaultValue="2020-04-05"
-                style={dateFormStyle}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
+            <BasicDateRangePicker/>
               <NewMaterial />
             </Box>
             <Box className={css.content}>
