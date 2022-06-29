@@ -13,6 +13,7 @@ export const clientsReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         clients: action.payload.clients,
+
       };
     case "clients/fetch/rejected":
       return {
