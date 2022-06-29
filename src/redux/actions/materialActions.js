@@ -32,7 +32,7 @@ export const newMaterial = ({ name, volumeType, price }) => {
     dispatch({ type: "NEW_MATERIAL/fulfilled", payload: json });
   };
 };
-
+//
 export const deleteMaterial = (id) => {
   return async (dispatch) => {
     dispatch({ type: "delete_material/pending" });
