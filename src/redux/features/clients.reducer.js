@@ -79,7 +79,7 @@ export const loadClients = () => {
         },
       });
       const json = await res.json();
-      dispatch({ type: "clients/fetch/fulfilled", payload: json.clients });
+      dispatch({ type: "clients/fetch/fulfilled", payload: json });
     } catch (e) {
       dispatch({ type: "clients/fetch/rejected", error: e.toString() });
     }

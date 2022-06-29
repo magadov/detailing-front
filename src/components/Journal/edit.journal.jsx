@@ -9,14 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { TextField } from "@mui/material";
 import { editService } from "../../redux/features/services.reducer";
 import { useState } from "react";
+import LoadingButton from '@mui/lab/LoadingButton';
 
-export default function EditJournal({ serviceId }) {
+
+export default function EditJournal({ serviceId, names, price }) {
   const editing = useSelector((state) => state.servicesReducer.editing);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [cost, setCost] = useState("");
-
+  const [name, setName] = useState(names);
+  const [cost, setCost] = useState(price);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -34,7 +35,6 @@ export default function EditJournal({ serviceId }) {
 
   const saveChange = (id) => {
     dispatch(editService(id, name, cost));
-    setOpen(false);
   };
 
   return (
@@ -56,34 +56,35 @@ export default function EditJournal({ serviceId }) {
         <DialogTitle id="alert-dialog-title">Редактирование</DialogTitle>
         <DialogContent style={{ margin: "auto" }}>
           <DialogContentText id="alert-dialog-description">
-            <TextField
-              id="outlined-basic"
-              label="Наименование"
-              variant="outlined"
-              type="text"
-              value={name}
-              onChange={handleChangeName}
-              style={{ width: 200, marginTop: 15, marginRight: 10 }}
-            />
-            <TextField
-              id="outlined-basic"
-              label="Цена"
-              variant="outlined"
-              type="number"
-              value={cost}
-              onChange={handleChangeCost}
-              style={{ width: 100, marginTop: 15, marginRight: 10 }}
-            />
+                  <TextField
+                    id="outlined-basic"
+                    label="Наименование"
+                    variant="outlined"
+                    type="text"
+                    value={name}
+                    onChange={handleChangeName}
+                    style={{ width: 200, marginTop: 15, marginRight: 10 }}
+                  />
+                  <TextField
+                    id="outlined-basic"
+                    label="Цена"
+                    variant="outlined"
+                    type="number"
+                    value={cost}
+                    onChange={handleChangeCost}
+                    style={{ width: 100, marginTop: 15, marginRight: 10 }}
+                  />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            disabled={editing}
+          <LoadingButton
+            style={{background:'orange', color: 'white'}}
+            loading={editing}
             onClick={() => saveChange(serviceId)}
             autoFocus
           >
             Сохранить
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </div>

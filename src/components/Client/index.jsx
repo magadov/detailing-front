@@ -59,6 +59,7 @@ const Client = () => {
     dispatch(deleteClient(id));
   };
 
+
   const filtered = clients.filter((element) => {
     return (
       element.firstName.toLowerCase().includes(search.toLowerCase()) ||

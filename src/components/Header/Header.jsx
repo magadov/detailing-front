@@ -16,7 +16,7 @@ const tabStyle = { marginLeft: 0 };
 
 const Header = () => {
   const [value, setValue] = useState();
-  const [malue, setMalue] = useState();
+  const [exit, setExit] = useState();
 
   return (
     <AppBar style={headerStyle} position="static">
@@ -28,7 +28,7 @@ const Header = () => {
                 <Tabs
                   style={tabStyle}
                   textColor="inherit"
-                  value={value}
+                  value={value ? value : 0}
                   onChange={(e, value) => setValue(value)}
                   TabIndicatorProps={{ style: { backgroundColor: "orange" } }}
                 >
@@ -59,14 +59,14 @@ const Header = () => {
               <div className={css.iconStyle}>
                 <div className={css.kassa}>
                   <Wallet style={walletStyle} />
-                  <span className={css.sum}> 2313 RUB </span>
+                  <span className={css.sum}> 2131 RUB </span>
                 </div>
                 <div>
                   <Tabs
                     style={tabStyle}
                     textColor="inherit"
-                    value={malue}
-                    onChange={(e, malue) => setMalue(malue)}
+                    value={exit ? exit : 0}
+                    onChange={(e, exit) => setExit(exit)}
                     TabIndicatorProps={{ style: { backgroundColor: "orange" } }}
                   >
                     <Tab style={navbarStyle} label="Выход" />

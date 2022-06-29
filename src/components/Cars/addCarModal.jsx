@@ -76,7 +76,7 @@ const AddCarModal = ({ clientId }) => {
           style={{ background: "orange", fontSize: 8 }}
           onClick={handleClickOpen}
         >
-          изменить
+          добавить машину
         </Button>
       </TableCell>
       <Dialog

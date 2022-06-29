@@ -1,14 +1,30 @@
 const initialState = {
   services: [],
+  datess: [],
   error: null,
   loading: false,
-  deleting: false,
   adding: false,
   editing: false
 };
 
 export const servicesReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "GET_SERVICESBYDATE_PENDING":
+      return {
+        ...state,
+        loading: true
+      };
+    case "GET_SERVICESBYDATE_REJECTED":
+      return {
+        ...state,
+        error: action.message
+      };
+    case "GET_SERVICESBYDATE_FULFILLED":
+      return{
+        ...state,
+        services: action.payload.services,
+        loading: false,
+      };
     case "ADD_SERVICE_PENDING":
       return {
         ...state,
@@ -72,8 +88,8 @@ export const servicesReducer = (state = initialState, action) => {
         ...state,
         editing: false,
         services: state.services.map(service => {
-          if(service._id === action.payload.service._id) {
-            return action.payload.service
+          if(service._id === action.payload.result._id) {
+            return action.payload.result
           }
           return service
         })
@@ -81,6 +97,25 @@ export const servicesReducer = (state = initialState, action) => {
     default:
       return state;
   }
+};
+
+export const getServicesByDate = (periods) => {
+   return async (dispatch) => {
+     dispatch({ type: "GET_SERVICESBYDATE_LOADING" });
+     try {
+       console.log("xonnwnxnx")
+       const res = await fetch(`http://localhost:3003/services?periodStart=${periods[0]}&periodEnd=${periods[1]}`, {
+         headers: {
+           Authorization: `Bearer ${localStorage.getItem("token")}`
+         }
+       })
+       const json = await res.json();
+       dispatch({ type: "GET_SERVICESBYDATE_FULFILLED", payload:json })
+     }catch (e) {
+       dispatch({ type: "GET_SERVICESBYDATE_REJECTED", error: e.message})
+     }
+   }
+
 };
 
 export const loadServices = () => {
@@ -93,7 +128,6 @@ export const loadServices = () => {
         },
       });
       const json = await res.json();
-      console.log(json)
       dispatch({ type: "services/fetch/fulfilled", payload: json });
     } catch (e) {
       dispatch({ type: "services/fetch/rejected", error: e.message });
@@ -101,13 +135,13 @@ export const loadServices = () => {
   };
 };
 
-export const addService = (name, cost, car, client) => {
+export const addService = (data) => {
   return async (dispatch) => {
     dispatch({ type: "ADD_SERVICE_PENDING" });
     try {
       const res = await fetch("http://localhost:3003/services", {
         method: "POST",
-        body: JSON.stringify({ name, cost, car, client }),
+        body: JSON.stringify(data),
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -155,6 +189,7 @@ export const editService = (id, name, cost) => {
         body: JSON.stringify(editJournal),
       });
       const json = await res.json()
+      console.log(json)
       dispatch ({ type: "EDIT_SERVICE_FULFILLED", payload: json })
     }catch (e) {
       dispatch ({ type: "EDIT_SERVICE_REJECTED", error: e.message})
