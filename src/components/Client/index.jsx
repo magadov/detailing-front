@@ -80,7 +80,11 @@ const Client = () => {
             <Box style={classes.content}>
               <h1> Клиенты </h1>
               <TableContainer style={{ width: 1050 }} component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table" style={{borderCollapse: 'inherit'}}>
+                <Table
+                  sx={{ minWidth: 650 }}
+                  aria-label="simple table"
+                  style={{ borderCollapse: "inherit" }}
+                >
                   <TableHead>
                     <TableRow>
                       <TableCell align="center">№</TableCell>

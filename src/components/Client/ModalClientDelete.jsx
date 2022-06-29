@@ -20,6 +20,7 @@ const classes = {
   },
 };
 const ModalClientDelete = ({ id, deleting }) => {
+
   const [open, setOpen] = React.useState(false);
 
   const dispatch = useDispatch();

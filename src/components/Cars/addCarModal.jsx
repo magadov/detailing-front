@@ -38,7 +38,6 @@ const schema = yup.object({
 const AddCarModal = ({ clientId }) => {
   const loading = useSelector((state) => state.carsReducer.loading);
 
-
   const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
