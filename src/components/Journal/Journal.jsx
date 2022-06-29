@@ -17,37 +17,42 @@ import Container from "@mui/material/Container";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteService,
+  getServicesByDate,
   loadServices,
 } from "../../redux/features/services.reducer";
-import AlertDialogSlide from "./journalModal";
+import JournalAddingPage from "./JournalAddingPage";
 import { loadCars } from "../../redux/features/cars.reducer";
 import EditJournal from "./edit.journal";
-import { loadClients } from '../../redux/features/clients.reducer';
+import { loadClients } from "../../redux/features/clients.reducer";
+import moment from "moment/min/moment-with-locales";
+import BasicDateRangePicker from '../Report/DatePicker';
 
 export default function Journal() {
   const services = useSelector((state) => state.servicesReducer.services);
   const loading = useSelector((state) => state.servicesReducer.loading);
   const deleting = useSelector((state) => state.servicesReducer.deleting);
-  console.log(services)
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+
 
   useEffect(() => {
     dispatch(loadServices());
     dispatch(loadCars());
     dispatch(loadClients());
+    dispatch(getServicesByDate());
   }, [dispatch]);
 
-  const filtered = services.filter((elem) => {
+  const filtered = services?.filter((elem) => {
     return elem.name.toLowerCase().includes(search.toLowerCase());
   });
+
 
   const handleClickDelete = (id) => {
     dispatch(deleteService(id));
   };
 
+
   const searchStyle = { width: 400 };
-  const dateFormStyle = { width: 200 };
 
   return (
     <>
@@ -65,17 +70,8 @@ export default function Journal() {
                   style={searchStyle}
                   onChange={(event) => setSearch(event.target.value)}
                 />
-                <TextField
-                  id="date"
-                  label="Дата"
-                  type="date"
-                  defaultValue="2020-04-05"
-                  style={dateFormStyle}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <AlertDialogSlide />
+                <BasicDateRangePicker />
+                <JournalAddingPage />
               </Box>
               <Box className={css.content}>
                 <h1> Журнал услуг </h1>
@@ -90,10 +86,11 @@ export default function Journal() {
                         <TableCell align="center">Цена</TableCell>
                         <TableCell align="center">Дата</TableCell>
                         <TableCell align="center"> </TableCell>
+                        <TableCell align="center"> </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {filtered.map((row, index) => (
+                      {filtered?.map((row, index) => (
                         <TableRow
                           key={index}
                           sx={{
@@ -106,12 +103,22 @@ export default function Journal() {
                           <TableCell component="th" scope="row">
                             {row.name}
                           </TableCell>
-                          <TableCell align="right">{row.client.firstName} {row.client.lastName}  </TableCell>
-                          <TableCell align="right">{row.car.vinData.model}</TableCell>
-                          <TableCell align="right">{row.cost}</TableCell>
-                          <TableCell align="right">{row.createdAt}</TableCell>
                           <TableCell align="right">
-                            <EditJournal serviceId={row._id} />
+                            {row.client?.firstName} {row.client?.lastName}{" "}
+                          </TableCell>
+                          <TableCell align="right">
+                            {row.car?.vinData.model}
+                          </TableCell>
+                          <TableCell align="right">{row.cost}</TableCell>
+                          <TableCell align="right">
+                            {moment(row.createdAt).locale("ru").format("LLL")}
+                          </TableCell>
+                          <TableCell align="right">
+                            <EditJournal
+                              serviceId={row._id}
+                              names={row.name}
+                              price={row.cost}
+                            />
                           </TableCell>
                           <TableCell align="right">
                             <Button

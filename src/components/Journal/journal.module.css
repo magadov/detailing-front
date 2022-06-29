@@ -1,19 +1,15 @@
-/*.search {*/
-/*  display: flex;*/
-/*  justify-content: space-between;*/
-/*  margin: 40px 0 40px 0;*/
-/*}*/
-/*.addButton {*/
-/*  background-color: orange;*/
-/*  margin-left: 100px;*/
-/*  font-size: 12px;*/
-/*  width: 300px;*/
-/*}*/
-.servSelect {
+.servSel {
+  width: 1070px;
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 }
 .inpStyle {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 20px 0;
+}
+.servSelect {
   display: flex;
   justify-content: space-between;
   margin: 20px 0 20px 0;

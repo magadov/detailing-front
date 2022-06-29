@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
-import AlertDialogSlide from "../Journal/journalModal";
 import EditJournal from "../Journal/edit.journal";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -23,10 +22,12 @@ import {
 import { loadCars } from "../../redux/features/cars.reducer";
 import { loadClients } from "../../redux/features/clients.reducer";
 import css from "../Journal/journal.module.css";
+import BasicDateRangePicker from './DatePicker';
+import moment from 'moment/min/moment-with-locales';
+
 
 const Report = () => {
   const services = useSelector((state) => state.servicesReducer.services);
-  const loading = useSelector((state) => state.servicesReducer.loading);
   const deleting = useSelector((state) => state.servicesReducer.deleting);
   const dispatch = useDispatch();
 
@@ -46,31 +47,23 @@ const Report = () => {
     dispatch(deleteService(id));
   };
 
-  const searchStyle = { width: 400 };
-  const dateFormStyle = { width: 200 };
-
+  const searchStyle = { width: 400, marginLeft: 20 };
   return (
     <>
       <Container maxWidth="lg">
-        <Box sx={{ height: "100vh" }}>
-          <Box className={css.inputFormMain}>
-            <TextField
-              id="outlined-basic"
-              label="Поиск"
-              variant="outlined"
-              style={searchStyle}
-              onChange={(event) => setSearch(event.target.value)}
-            />
-            <TextField
-              id="date"
-              label="Дата"
-              type="date"
-              defaultValue="2020-04-05"
-              style={dateFormStyle}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
+        <Box sx={{ minWidth: 650 }}>
+          <Box className={css.servSel}>
+            <BasicDateRangePicker />
+                <Box>
+                  <TextField
+                    id="outlined-basic"
+                    label="Поиск"
+                    variant="outlined"
+                    style={searchStyle}
+                    onChange={(event) => setSearch(event.target.value)}
+                  />
+                </Box>
+              </Box>
           </Box>
           <Box className={css.content}>
             <h1> Отчёты </h1>
@@ -101,10 +94,10 @@ const Report = () => {
                         {row.name}
                       </TableCell>
                       <TableCell align="right">
-                        {row.client.firstName} {row.client.lastName}{" "}
+                        {row.client?.firstName} {row.client?.lastName}{" "}
                       </TableCell>
                       <TableCell align="right">{row.cost}</TableCell>
-                      <TableCell align="right">{row.createdAt}</TableCell>
+                      <TableCell align="right">{moment(row.createdAt).locale('ru').format('LLL')}</TableCell>
                       <TableCell align="right">
                         <EditJournal serviceId={row._id} />
                       </TableCell>
@@ -127,7 +120,6 @@ const Report = () => {
               </Table>
             </TableContainer>
           </Box>
-        </Box>
       </Container>
     </>
   );

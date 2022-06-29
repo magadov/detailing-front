@@ -10,7 +10,7 @@ const Cars = ({ clientId }) => {
     <>
       {carsByClients.map((car) => {
         return (
-          <div align="right">
+          <div key={car._id} align="right">
             <TableCell>
               {car.vinData.mark} {car.vinData.model}
             </TableCell>
