@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -15,7 +14,6 @@ import Container from "@mui/material/Container";
 import css from "./expenses.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-
 import NewMaterial from "./NewMaterial";
 import AdmissionModal from "./Admission";
 import {
@@ -23,11 +21,11 @@ import {
   loadMaterial,
 } from "../../redux/actions/materialActions";
 import Edit from "./Edit";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function Expenses() {
   const materials = useSelector((state) => state.materialReducer.materials);
   const loading = useSelector((state) => state.materialReducer.loading);
-  const deleting = useSelector((state) => state.materialReducer.deleting);
   const [search, setSearch] = React.useState("");
 
   const dispatch = useDispatch();
@@ -62,6 +60,22 @@ export default function Expenses() {
                 style={searchInputStyle}
                 onChange={(event) => setSearch(event.target.value)}
               />
+              {/*<TextField*/}
+              {/*  id="outlined-select-currency-native"*/}
+              {/*  select*/}
+              {/*  label="Ед"*/}
+              {/*  name="volumeType"*/}
+              {/*  style={{ width: 80, marginTop: 15 }}*/}
+              {/*  SelectProps={{*/}
+              {/*    native: true,*/}
+              {/*  }}*/}
+              {/*>*/}
+              {/*  {materials.map((option) => (*/}
+              {/*    <option key={option.value} value={option.value}>*/}
+              {/*      {option.direction.map((option) => option.date)}*/}
+              {/*    </option>*/}
+              {/*  ))}*/}
+              {/*</TextField>*/}
               <TextField
                 id="date"
                 label="Дата"
@@ -126,21 +140,25 @@ export default function Expenses() {
                           {row.volumeType}
                         </TableCell>
                         <TableCell align="right">
-                          {row.direction.date}
+                          {row.direction.map((item) => item.date)}
                         </TableCell>
                         <TableCell align="right">
-                          <Edit materialId={row._id} />
+                          <Edit
+                            materialId={row._id}
+                            first={row.name}
+                            second={row.price}
+                          />
                         </TableCell>
                         <TableCell align="right">
-                          <Button
+                          <LoadingButton
                             variant="contained"
                             color="primary"
-                            disabled={deleting}
+                            loading={row.deleting}
                             style={{ background: "orange", fontSize: 8 }}
                             onClick={() => handleDeleteMaterial(row._id)}
                           >
                             удалить
-                          </Button>
+                          </LoadingButton>
                         </TableCell>
                       </TableRow>
                     ))}

@@ -1,6 +1,6 @@
 export const loadMaterial = () => {
   return async (dispatch) => {
-    const res = await fetch("http://localhost:3008/materials", {
+    const res = await fetch("http://localhost:3010/materials", {
       headers: {
         "Content-type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -16,7 +16,7 @@ export const loadMaterial = () => {
 export const newMaterial = ({ name, volumeType, price }) => {
   return async (dispatch) => {
     dispatch({ type: "new_material/pending" });
-    const res = await fetch("http://localhost:3008/materials", {
+    const res = await fetch("http://localhost:3010/materials", {
       method: "POST",
       body: JSON.stringify({
         name,
@@ -35,8 +35,8 @@ export const newMaterial = ({ name, volumeType, price }) => {
 
 export const deleteMaterial = (id) => {
   return async (dispatch) => {
-    dispatch({ type: "delete_material/pending" });
-    await fetch(`http://localhost:3008/materials/${id}`, {
+    dispatch({ type: "delete_material/pending", payload: id });
+    await fetch(`http://localhost:3010/materials/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -51,17 +51,16 @@ export const admission = (id, volume) => {
     dispatch({ type: "admission/pending", payload: id });
     try {
       const res = await fetch(
-        `http://localhost:3008/materials/${id}/admission`,
+        `http://localhost:3010/materials/${id}/admission`,
         {
           method: "POST",
-          body: JSON.stringify({volume: Number(volume)}),
+          body: JSON.stringify({volume: Number(volume) }),
           headers: {
             "Content-type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      console.log(volume)
       const json = await res.json();
       dispatch({ type: "ADMISSION/fulfilled", payload: json });
     } catch (e) {
@@ -77,7 +76,7 @@ export const editMaterial = (id, name, price) => {
   };
   return async (dispatch) => {
     dispatch({ type: "edit/pending", payload: id });
-    const res = await fetch(`http://localhost:3008/materials/${id}`, {
+    const res = await fetch(`http://localhost:3010/materials/${id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json",
