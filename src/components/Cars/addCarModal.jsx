@@ -1,53 +1,44 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCars } from "../../redux/features/cars.reducer";
-import TableCell from "@mui/material/TableCell";
-
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import * as yup from "yup";
+import DialogActions from "@mui/material/DialogActions";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const classes = {
-  addButton: {
-    backgroundColor: "orange",
-    fontSize: 12,
-    marginLeft: 100,
-    color: "white",
-    height: 57,
-  },
-  addBut: {
-    backgroundColor: "orange",
-    fontSize: 12,
-    margin: "auto",
-    color: "white",
-    height: 50,
-  },
-  nameInput: {
-    width: 300,
-    margin: "0 20 20 0",
-  },
   inputDiv: {
     textAlign: "center",
   },
   inputPosition: {
-    margin: "15px",
+    height: 80,
+    margin: 10,
   },
 };
 
+const schema = yup.object({
+  vin: yup
+    .string()
+    .required("Введите вин")
+    .max(17, "Не более 17 символов")
+    .min(17, "Не менее 17 символов"),
+});
+
 const AddCarModal = ({ clientId }) => {
-  const adding = useSelector((state) => state.carsReducer.adding);
+  const loading = useSelector((state) => state.carsReducer.loading);
 
   const [open, setOpen] = useState(false);
-  const [vin, setVin] = useState("");
 
   const dispatch = useDispatch();
 
@@ -58,27 +49,36 @@ const AddCarModal = ({ clientId }) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleChangeVin = (e) => {
-    setVin(e.target.value);
-  };
 
-  const handleAddCar = () => {
-    dispatch(addCars(vin, clientId));
-    setOpen(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const handleAddCar = ({ vin }) => {
+    dispatch(addCars({ vin, clientId })).then(() => setOpen(false));
+    reset({ vin: "" });
+  };
+  const toInputUppercase = (e) => {
+    e.target.value = ("" + e.target.value).toUpperCase();
   };
 
   return (
     <>
-      <TableCell align="right">
-        <Button
+      <div>
+        <LoadingButton
           variant="contained"
           color="primary"
           style={{ background: "orange", fontSize: 8 }}
           onClick={handleClickOpen}
         >
           добавить машину
-        </Button>
-      </TableCell>
+        </LoadingButton>
+      </div>
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -89,25 +89,33 @@ const AddCarModal = ({ clientId }) => {
         <DialogTitle>{"Добавление машины"}</DialogTitle>
         <DialogContent style={classes.inputDiv}>
           <DialogContentText id="alert-dialog-slide-description">
-            <TextField
-              id="outlined-basic"
-              label="VIN"
-              variant="outlined"
-              style={classes.inputPosition}
-              onChange={handleChangeVin}
-            />
+            <form onSubmit={handleSubmit(handleAddCar)}>
+              <TextField
+                onInput={toInputUppercase}
+                id="outlined-basic"
+                label="VIN"
+                variant="outlined"
+                name="vin"
+                style={classes.inputPosition}
+                helperText={errors.vin && errors.vin.message}
+                error={!!errors.vin}
+                {...register("vin")}
+              />
+
+              <Box style={{ margin: "auto", marginBottom: 10 }}>
+                <LoadingButton
+                  loading={loading}
+                  style={{ backgroundColor: "orange" }}
+                  variant="contained"
+                  type="submit"
+                >
+                  добавить
+                </LoadingButton>
+              </Box>
+            </form>
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button
-            disabled={adding}
-            style={classes.addBut}
-            variant="contained"
-            onClick={handleAddCar}
-          >
-            + добавить
-          </Button>
-        </DialogActions>
+        <DialogActions></DialogActions>
       </Dialog>
     </>
   );

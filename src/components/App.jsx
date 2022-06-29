@@ -31,7 +31,7 @@ function App() {
       />
       <Route
         path="/signIn"
-        element={token ? <Navigate to="/" /> : <SignInPage />}
+        element={token ? <Navigate to="/journal" /> : <SignInPage />}
       />
       <Route
         path="/"
