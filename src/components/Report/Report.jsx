@@ -24,6 +24,7 @@ import { loadClients } from "../../redux/features/clients.reducer";
 import css from "../Journal/journal.module.css";
 import BasicDateRangePicker from './DatePicker';
 import moment from 'moment/min/moment-with-locales';
+import ModalServiceDelete from '../Journal/journalServiceDelete';
 
 
 const Report = () => {
@@ -102,17 +103,7 @@ const Report = () => {
                         <EditJournal serviceId={row._id} />
                       </TableCell>
                       <TableCell align="right">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          disabled={deleting}
-                          style={{ background: "orange", fontSize: 8 }}
-                          onClick={(event) => {
-                            handleClickDelete(row._id);
-                          }}
-                        >
-                          удалить
-                        </Button>
+                        <ModalServiceDelete id={row._id}/>
                       </TableCell>
                     </TableRow>
                   ))}

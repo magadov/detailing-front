@@ -1,6 +1,8 @@
+import { serverUrl } from '../../serverUrl';
+
 export const loadMaterial = () => {
   return async (dispatch) => {
-    const res = await fetch("http://localhost:3003/materials", {
+    const res = await fetch(`${serverUrl}/materials`, {
       headers: {
         "Content-type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -16,7 +18,7 @@ export const loadMaterial = () => {
 export const newMaterial = ({ name, volumeType, price }) => {
   return async (dispatch) => {
     dispatch({ type: "new_material/pending" });
-    const res = await fetch("http://localhost:3003/materials", {
+    const res = await fetch(`${serverUrl}/materials`, {
       method: "POST",
       body: JSON.stringify({
         name,
@@ -36,7 +38,7 @@ export const newMaterial = ({ name, volumeType, price }) => {
 export const deleteMaterial = (id) => {
   return async (dispatch) => {
     dispatch({ type: "delete_material/pending" });
-    await fetch(`http://localhost:3003/materials/${id}`, {
+    await fetch(`${serverUrl}/materials/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -51,7 +53,7 @@ export const admission = (id, volume) => {
     dispatch({ type: "admission/pending", payload: id });
     try {
       const res = await fetch(
-        `http://localhost:3003/materials/${id}/admission`,
+        `${serverUrl}/materials/${id}/admission`,
         {
           method: "POST",
           body: JSON.stringify({volume: Number(volume) }),
@@ -76,7 +78,7 @@ export const editMaterial = (id, name, price) => {
   };
   return async (dispatch) => {
     dispatch({ type: "edit/pending", payload: id });
-    const res = await fetch(`http://localhost:3003/materials/${id}`, {
+    const res = await fetch(`${serverUrl}/materials/${id}`, {
       method: "PATCH",
       headers: {
         "Content-type": "application/json",

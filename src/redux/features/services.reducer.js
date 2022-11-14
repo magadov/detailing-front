@@ -1,3 +1,4 @@
+import { serverUrl } from '../../serverUrl';
 const initialState = {
   services: [],
   datess: [],
@@ -104,7 +105,7 @@ export const getServicesByDate = (periods) => {
      dispatch({ type: "GET_SERVICESBYDATE_LOADING" });
      try {
        console.log("xonnwnxnx")
-       const res = await fetch(`http://localhost:3003/services?periodStart=${periods[0]}&periodEnd=${periods[1]}`, {
+       const res = await fetch(`${serverUrl}/services?periodStart=${periods[0]}&periodEnd=${periods[1]}`, {
          headers: {
            Authorization: `Bearer ${localStorage.getItem("token")}`
          }
@@ -122,7 +123,7 @@ export const loadServices = () => {
   return async (dispatch) => {
     dispatch({ type: "services/fetch/loading" });
     try {
-      const res = await fetch("http://localhost:3003/services", {
+      const res = await fetch(`${serverUrl}/services`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -139,7 +140,7 @@ export const addService = (data) => {
   return async (dispatch) => {
     dispatch({ type: "ADD_SERVICE_PENDING" });
     try {
-      const res = await fetch("http://localhost:3003/services", {
+      const res = await fetch(`${serverUrl}/services`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -159,7 +160,7 @@ export const deleteService = (id) => {
   return async (dispatch) => {
     dispatch({ type: "DELETE_SERVICE_PENDING" });
     try {
-      await fetch(`http://localhost:3003/services/${id}`, {
+      await fetch(`${serverUrl}/services/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -180,7 +181,7 @@ export const editService = (id, name, cost) => {
       cost,
     }
     try {
-      const res = await fetch(`http://localhost:3003/services/${id}`,{
+      const res = await fetch(`${serverUrl}/services/${id}`,{
         method: "PATCH",
         headers: {
           "Content-type": "application/json",

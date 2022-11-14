@@ -1,3 +1,4 @@
+import { serverUrl } from '../../serverUrl';
 const initialState = {
   clients: [],
   loading: false,
@@ -80,7 +81,7 @@ export const loadClients = () => {
     dispatch({ type: "clients/fetch/pending" });
     const state = getState();
     try {
-      const res = await fetch("http://localhost:3003/clients", {
+      const res = await fetch(`${serverUrl}/clients`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${state.application.token}`,
@@ -99,7 +100,7 @@ export const addClient = (data) => {
     const state = getState();
     dispatch({ type: "clients/add/pending" });
     try {
-      const res = await fetch("http://localhost:3003/clients", {
+      const res = await fetch(`${serverUrl}/clients`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -123,7 +124,7 @@ export const deleteClient = (id) => {
     const state = getState();
     dispatch({ type: "clients/delete/pending", payload: id });
     try {
-      await fetch(`http://localhost:3003/clients/${id}`, {
+      await fetch(`${serverUrl}/clients/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${state.application.token}`,

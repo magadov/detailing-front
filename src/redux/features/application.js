@@ -1,3 +1,4 @@
+import { serverUrl } from '../../serverUrl';
 const initialState = {
   signingIn: false,
   error: null,
@@ -32,7 +33,7 @@ export const auth = (login, password) => {
   return async (dispatch) => {
     dispatch({ type: "application/signIn/pending" });
     try {
-      const response = await fetch("http://localhost:3003/admins", {
+      const response = await fetch(`${serverUrl}/admins`, {
         method: "POST",
         body: JSON.stringify({ login, password }),
         headers: {

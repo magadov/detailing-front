@@ -1,3 +1,4 @@
+import { serverUrl } from '../../serverUrl';
 const initialState = {
   cars: [],
   loading: false,
@@ -68,7 +69,7 @@ export const loadCars = () => {
     dispatch({ type: "cars/fetch/pending" });
     const state = getState();
     try {
-      const res = await fetch("http://localhost:3003/cars", {
+      const res = await fetch(`${serverUrl}/cars`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${state.application.token}`,
@@ -87,7 +88,7 @@ export const addCars = ({ vin, clientId }) => {
     dispatch({ type: "cars/add/pending", payload: clientId });
     const state = getState();
     try {
-      const res = await fetch(`http://localhost:3003/cars/${clientId}`, {
+      const res = await fetch(`${serverUrl}/cars/${clientId}`, {
         method: "POST",
         body: JSON.stringify({ vin }),
         headers: {
@@ -107,7 +108,7 @@ export const deleteCars = (id) => {
     const state = getState();
     dispatch({ type: "cars/delete/pending" });
     try {
-      const res = await fetch(`http://localhost:3003/cars/${id}`, {
+      const res = await fetch(`${serverUrl}/cars/${id}`, {
         method: "DELETE",
         headers: {
           "Content-type": "application/json",
