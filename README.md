@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Сайт для детейлинг центра.
 
-Сайт для Детейлинг центра.
+Сайт выполнен для детейлинг компании New Car.
 
 ## Available Scripts
 
