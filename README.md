@@ -18,6 +18,9 @@
 
 ![png](https://github.com/magadov/detailing-front/blob/main/images/New%20Car.png)
 
+Вывод клиентов
+![png](https://github.com/magadov/detailing-front/blob/main/images/New%20car%202.png)
+
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
