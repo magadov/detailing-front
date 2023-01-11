@@ -2,15 +2,21 @@
 
 Сайт выполнен для детейлинг компании New Car.
 
-## Функционал сайта
+## Предназначение сайта
 Проект предназначен для ведения учета деятельности автосервиса (какие услуги оказывались, кому и когда, расход/приход материала, учёт расходов)
 
-In the project directory, you can run:
+### Функционал сайта
+- Авторизация
+- Вывод услуг по категориям
+- Добавление/удаление машин по VIN-коду(запрос на удалённый API)
+- Добавление/удаление владельцев машин
+- Добавление/удаление услуг
+- Добавление/удаление категорий
+- Вывод журнала услуг
+- Вывод расходов по датам
+- Вывод отчёта по датам
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![png]([./](https://github.com/magadov/detailing-front/blob/main/images/New%20Car.png)
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
