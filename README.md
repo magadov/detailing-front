@@ -55,6 +55,8 @@ npm run dev
   <img alt="Nodejs" src="https://img.shields.io/badge/-Nodejs-43853d?style=for-the-badge&logo=Node.js&logoColor=white" />
   <img alt="JavaScript" src="https://img.shields.io/badge/-JavaScript-yellow?style=for-the-badge&logo=JavaScript&logoColor=white" />
   <img alt="Bootstrap" src="https://img.shields.io/badge/-Bootstrap-430098?style=for-the-badge&logo=bootstrap&logoColor=white" />
+  <img alt="Mongoose" src="https://img.shields.io/badge/-Mongoose-430098?style=for-the-badge&logo=Mongoose&logoColor=white" />
+  <img alt="Express" src="https://img.shields.io/badge/-Express-430098?style=for-the-badge&logo=Express&logoColor=white" />
 </p>
 
 ---
