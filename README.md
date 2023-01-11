@@ -14,22 +14,22 @@
 - Добавление/удаление услуг
 - Добавление/удаление категорий
 - Вывод журнала услуг
-- 
+ 
  ![png](https://github.com/magadov/detailing-front/blob/main/images/New%20Car.png)
  
  
 - Добавление/удаление клиентов
-- 
+ 
  ![png](https://github.com/magadov/detailing-front/blob/lastChanges/images/New%20car%202.png)
 
 
 - Вывод расходов по датам
-- 
+
  ![png](https://github.com/magadov/detailing-front/blob/lastChanges/images/New%20car%203.png)
 
 
 - Вывод отчёта по датам
-- 
+ 
  ![png](https://github.com/magadov/detailing-front/blob/main/images/New%20car%204.png)
 
 ---
